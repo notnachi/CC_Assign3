@@ -1,9 +1,7 @@
 import AWS from 'aws-sdk';
 
 AWS.config.update({ 
-    "accessKeyId": "AKIA43LT5OBK554HDKNN",
-    "secretAccessKey": "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",
-    "region": "us-east-2"
+
 })
 
 const dynoamodb = new AWS.DynamoDB.DocumentClient();
