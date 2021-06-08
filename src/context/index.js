@@ -1,12 +1,21 @@
 import {
     SubjectsContext,
-    SubjectProvider,
+    SubjectsProvider,
     useSubjectsValue
-} from './subject-context'
+} from './subjects-context'
+
+import {
+    SelectedSubjectContext,
+    SelectedSubjectProvider,
+    useSelectedSubjectValue,
+} from './selected-subject-context';
 
 
 export {
     SubjectsContext,
-    SubjectProvider,
-    useSubjectsValue
+    SubjectsProvider,
+    useSubjectsValue,
+    SelectedSubjectContext,
+    SelectedSubjectProvider,
+    useSelectedSubjectValue
 }

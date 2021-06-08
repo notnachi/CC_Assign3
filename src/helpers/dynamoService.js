@@ -64,3 +64,21 @@ export const archiveTask = async(task_id) => {
         console.error(error);
     })
 }
+
+
+export const removeSubject = async(subject_id) => {
+    const params = {
+        TableName: subjects_table,
+        Key:{
+            subject_id: subject_id
+        }
+
+    }
+
+    return await dynoamodb.delete(params).promise().then(response => {
+        console.log(response);
+        return response
+    }, error =>{
+        console.error(error);
+    })
+}

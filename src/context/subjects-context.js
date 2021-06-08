@@ -3,7 +3,7 @@ import {useSubjects} from '../hooks/index'
 
 export const SubjectsContext = createContext();
 
-export const SubjectProvider = ({ children }) => {
+export const SubjectsProvider = ({ children }) => {
     const {subjects, setSubjects} = useSubjects();
 
     return (

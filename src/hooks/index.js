@@ -13,8 +13,12 @@ export const useTasks = selectedSubject => {
 
   const user_id = 'test'
 
+  const unsubscribeFunction = async () => {
+    return await getTasks(user_id);
+  }
+
   useEffect(async () => {
-    let unsubscribe = await getTasks(user_id)
+    let unsubscribe = await unsubscribeFunction()
 
     unsubscribe = selectedSubject && !collatedTasksExist(selectedSubject)
         ? (unsubscribe = unsubscribe.filter((item) => {
@@ -51,7 +55,7 @@ export const useTasks = selectedSubject => {
                     return item
             }))
         )
-    // return () => unsubscribe();
+    return () => unsubscribeFunction();
 
   }, [selectedSubject]);
 
@@ -59,13 +63,18 @@ export const useTasks = selectedSubject => {
 };
 
 export const useSubjects = () => {
+
+  const user_id = 'test'
   const [subjects, setSubjects] = useState([]);
 
   useEffect(async () => {
 
-    let allSubjects = await getSubjects()
+    let allSubjects = await getSubjects(user_id)
+
+    // console.log(allSubjects)
 
     if (JSON.stringify(allSubjects) !== JSON.stringify(subjects)) {
+      // console.log("Setting the subjects");
         setSubjects(allSubjects);
       }
 
