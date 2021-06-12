@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { FaSpaceShuttle, FaSun, FaRegPaperPlane } from 'react-icons/fa';
 
-export const TaskDate = ({ setTaskDate, showTaskDate, setShowTaskDate }) =>
+export const TaskDate = ({ setTaskDate, showTaskDate, setShowTaskDate, setAlternateSubject}) =>
   showTaskDate && (
     <div className="task-date" data-testid="task-date-overlay">
       <ul className="task-date__list">
@@ -10,11 +10,13 @@ export const TaskDate = ({ setTaskDate, showTaskDate, setShowTaskDate }) =>
           <div
             onClick={() => {
               setShowTaskDate(false);
+              setAlternateSubject('TODAY')
               setTaskDate(moment().format('DD/MM/YYYY'));
             }}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 setShowTaskDate(false);
+                setAlternateSubject('TODAY')
                 setTaskDate(moment().format('DD/MM/YYYY'));
               }
             }}
@@ -33,11 +35,13 @@ export const TaskDate = ({ setTaskDate, showTaskDate, setShowTaskDate }) =>
           <div
             onClick={() => {
               setShowTaskDate(false);
+              setAlternateSubject('NEXT_7')
               setTaskDate(moment().add(1, 'day').format('DD/MM/YYYY'));
             }}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 setShowTaskDate(false);
+                setAlternateSubject('NEXT_7')
                 setTaskDate(moment().add(1, 'day').format('DD/MM/YYYY'));
               }
             }}
@@ -56,11 +60,13 @@ export const TaskDate = ({ setTaskDate, showTaskDate, setShowTaskDate }) =>
           <div
             onClick={() => {
               setShowTaskDate(false);
+              setAlternateSubject('NEXT_7')
               setTaskDate(moment().add(7, 'days').format('DD/MM/YYYY'));
             }}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 setShowTaskDate(false);
+                setAlternateSubject('NEXT_7')
                 setTaskDate(moment().add(7, 'days').format('DD/MM/YYYY'));
               }
             }}

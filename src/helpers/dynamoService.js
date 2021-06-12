@@ -1,10 +1,11 @@
 import AWS from 'aws-sdk';
+import { v4 as uuidv4 } from 'uuid';
 
 AWS.config.update({ 
-
+    
 })
 
-const dynoamodb = new AWS.DynamoDB.DocumentClient();
+const dynamodb = new AWS.DynamoDB.DocumentClient();
 const subjects_table = 'subjects';
 const tasks_table = 'tasks';
 
@@ -17,7 +18,7 @@ export const getTasks = async (user_id) => {
         }
       };
 
-    return await dynoamodb.scan(params).promise().then(response => {
+    return await dynamodb.scan(params).promise().then(response => {
         return response.Items
     }, error =>{
         console.error(error);
@@ -33,7 +34,7 @@ export const getSubjects = async (user_id) => {
         }
       };
 
-    return await dynoamodb.scan(params).promise().then(response => {
+    return await dynamodb.scan(params).promise().then(response => {
         return response.Items
     }, error =>{
         console.error(error);
@@ -55,12 +56,7 @@ export const archiveTask = async(task_id) => {
         
       };
     
-    return await dynoamodb.update(params).promise().then(response => {
-        console.log(response);
-        return response
-    }, error =>{
-        console.error(error);
-    })
+    return await dynamodb.update(params).promise()
 }
 
 
@@ -73,10 +69,33 @@ export const removeSubject = async(subject_id) => {
 
     }
 
-    return await dynoamodb.delete(params).promise().then(response => {
+    return await dynamodb.delete(params).promise().then(response => {
         console.log(response);
         return response
     }, error =>{
         console.error(error);
     })
+}
+
+
+export const addSubject = async(subject) => {
+    const params = {
+        TableName: subjects_table,
+        Item: {
+            subject_id: uuidv4(),
+            ...subject
+        }
+    }
+
+    return await dynamodb.put(params).promise()
+}
+
+export const addTask = async(task) => {
+
+    const params = {
+        TableName: tasks_table,
+        Item: task
+    }
+
+    return await dynamodb.put(params).promise()   
 }

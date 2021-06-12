@@ -9,10 +9,10 @@ export const Subject = ({subject}) => {
     const { setSelectedSubject } = useSelectedSubjectValue();
 
     const deleteSubject = async(subject_id) => {
-        await removeSubject(subject_id).then( () => {
+        await removeSubject(subject_id).then(() => {
 
             setSubjects([...subjects]);
-            setSelectedSubject("INBOX");
+            setSelectedSubject("TODAY");
 
         })
     }
@@ -31,7 +31,7 @@ export const Subject = ({subject}) => {
                     <FaTrashAlt />   
                     {showConfirm && (
                         <div className="project-delete-modal">
-                            <div className="project-delete-modal__inner">
+                            <span className="project-delete-modal__inner">
                             <p>Are you sure you want to delete this project?</p>
                             <button
                                 type="button"
@@ -50,7 +50,7 @@ export const Subject = ({subject}) => {
                             >
                                 Cancel
                             </span>
-                            </div>
+                            </span>
                         </div>
                     )}
              </span>

@@ -102,7 +102,7 @@ export const Sidebar = () => {
                     className={!showSubjects ? 'hidden-projects' : undefined}
                 />
                 </span>
-                <h2>Subjects</h2>
+                <h2>Project</h2>
             </div>
 
             <ul className="sidebar__projects">{showSubjects && <Subjects />}</ul>

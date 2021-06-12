@@ -7,7 +7,6 @@ export const Subjects = ({activeValue = null}) => {
     const { setSelectedSubject } = useSelectedSubjectValue();
     const { subjects } = useSubjectsValue();
 
-    // console.log(subjects)
 
 
     return (

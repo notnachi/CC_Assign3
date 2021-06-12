@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
-import { v4 as uuidv4 } from 'uuid';
+import {getUser} from '../auth/authService'
 import { collatedTasksExist } from '../helpers';
 import {getTasks, getSubjects} from '../helpers/dynamoService'
+import { Redirect } from 'react-router';
 
 /********DYNAMO OPERATIONS ************/
 
@@ -11,51 +12,56 @@ export const useTasks = selectedSubject => {
   const [tasks, setTasks] = useState([]);
   const [archivedTasks, setArchivedTasks] = useState([]);
 
-  const user_id = 'test'
+  const user_id = getUser().username;
 
   const unsubscribeFunction = async () => {
     return await getTasks(user_id);
   }
 
-  useEffect(async () => {
-    let unsubscribe = await unsubscribeFunction()
+  useEffect(() => {
 
-    unsubscribe = selectedSubject && !collatedTasksExist(selectedSubject)
+    const someFunction = async() => {
+
+      let unsubscribe = await unsubscribeFunction()
+
+      unsubscribe = selectedSubject && !collatedTasksExist(selectedSubject)
+          ? (unsubscribe = unsubscribe.filter((item) => {
+              if(item.subject_id === selectedSubject)
+                  return item
+          }))
+          : selectedSubject === 'TODAY'
+          ? (unsubscribe = unsubscribe = unsubscribe.filter((item) => {
+              if(item.date === moment().format('DD/MM/YYYY'))
+                  return item
+          }))
+          : selectedSubject === 'INBOX' || selectedSubject === 0
+          ? (unsubscribe = unsubscribe.filter((item) => {
+              if(item.date === '')
+                  return item
+          }))
+          : unsubscribe;
+      
+      return unsubscribe;
+
+    }
+
+    someFunction().then((unsubscribe) => {
+      setTasks(
+
+        selectedSubject === 'NEXT 7'
         ? (unsubscribe = unsubscribe.filter((item) => {
-            if(item.subject_id === selectedSubject)
+            if(moment(item.date, 'DD-MM-YYYY').diff(moment(), 'days') <= 7 && moment(item.date, 'DD-MM-YYYY').diff(moment(), 'days') >= 0 && item.archived !== true)
                 return item
         }))
-        : selectedSubject === 'TODAY'
-        ? (unsubscribe = unsubscribe = unsubscribe.filter((item) => {
-            if(item.date === moment().format('DD/MM/YYYY'))
+        : (unsubscribe = unsubscribe.filter((item) => {
+            if(item.archived !== true)
                 return item
         }))
-        : selectedSubject === 'INBOX' || selectedSubject === 0
-        ? (unsubscribe = unsubscribe.filter((item) => {
-            if(item.date === '')
-                return item
-        }))
-        : unsubscribe;
+      )
+        
+    })
 
-        // unsubscribe = unsubscribe.map((item) => {
-        //     return {
-        //         id: uuidv4(),
-        //         ...item
-        //     }
-        // })
-
-        setTasks(
-            selectedSubject === 'NEXT 7'
-            ? (unsubscribe = unsubscribe.filter((item) => {
-                if(moment(item.date, 'DD-MM-YYYY').diff(moment(), 'days') <= 7 && item.archived !== true)
-                    return item
-            }))
-            : (unsubscribe = unsubscribe.filter((item) => {
-                if(item.archived !== true)
-                    return item
-            }))
-        )
-    return () => unsubscribeFunction();
+    return () => someFunction()
 
   }, [selectedSubject]);
 
@@ -64,7 +70,7 @@ export const useTasks = selectedSubject => {
 
 export const useSubjects = () => {
 
-  const user_id = 'test'
+  const user_id = getUser().username;
   const [subjects, setSubjects] = useState([]);
 
   useEffect(async () => {

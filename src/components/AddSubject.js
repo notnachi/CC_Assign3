@@ -1,17 +1,29 @@
 import React, { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { getUser } from '../auth/authService';
 import { useSubjectsValue } from '../context';
+import {addSubject} from '../helpers/dynamoService'
 
 export const AddSubject = ({shouldShow = false}) => {
     const [show, setShow] = useState(shouldShow);
     const [subjectName, setSubjectName] = useState('');
 
-    const newID = uuidv4();
+    const user_id = getUser().username;
 
     const {subjects, setSubjects} = useSubjectsValue();
 
 
-    /**check if there is a method to add subject in dynamo service */
+    const addSubjectHandler = () => {
+        const newSubject = {
+            subject_name: subjectName,
+            user_id: user_id
+        }
+
+        addSubject(newSubject).then(() => {
+            setSubjects([...subjects]);
+            setSubjectName('');
+            setShow(false);
+        })
+    }
 
 
     return (
@@ -29,7 +41,7 @@ export const AddSubject = ({shouldShow = false}) => {
             <button
                 className="add-project__submit"
                 type="button"
-                //onClick={() => addProject()}
+                onClick={() => addSubjectHandler()}
                 data-testid="add-project-submit"
             >
                 Add Subject

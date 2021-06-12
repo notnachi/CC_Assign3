@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { useTasks } from '../hooks';
 import {Checkbox} from './Checkbox'
 import { collatedTasks } from '../constants';
@@ -10,12 +10,20 @@ export const Tasks = () => {
 
     const { selectedSubject } = useSelectedSubjectValue();
     const { subjects } = useSubjectsValue();
-    const {tasks} = useTasks(selectedSubject)
+    const {tasks} = useTasks(selectedSubject);
 
-    // console.log(selectedSubject)
+    const [newTasks, setNewTasks] = useState([]);
 
+    const [archivedTaskID, setArchivedTaskID] = useState([])
 
+    useEffect(() => {
+        
+        setNewTasks([]);
+        setArchivedTaskID([]);
+        
+    }, [tasks])
 
+    console.log(tasks.length);
     let subjectName = '';
 
     if (collatedTasksExist(selectedSubject) && selectedSubject) {
@@ -28,13 +36,14 @@ export const Tasks = () => {
         selectedSubject &&
         !collatedTasksExist(selectedSubject)
       ) {
-          console.log('WHat is my subject name ' , getTitle(subjects, selectedSubject))
-        subjectName = getTitle(subjects, selectedSubject).subject_name;
+            subjectName = getTitle(subjects, selectedSubject).subject_name;
       }
 
     useEffect(() => {
         document.title = `${subjectName}: Todoist`;
       });
+    
+    
 
     return (
         <div className="tasks" data-testid="tasks">
@@ -43,13 +52,33 @@ export const Tasks = () => {
             <ul className="tasks__list">
                 {tasks.map((task) => (
                 <li key={`${task.task_id}`}>
-                    <Checkbox id={task.task_id} taskDesc={task.task_desc} />
-                    <span>{task.task_desc}</span>
+                    {archivedTaskID.includes(task.task_id)
+                    ? <span><s>{task.task_desc}</s></span>
+                    : <>
+                        <Checkbox id={task.task_id} setArchivedTaskID = {setArchivedTaskID} taskDesc={task.task_desc} />
+                        <span>{task.task_desc}</span>
+                    </>
+                    }
                 </li>
                 ))}
             </ul>
-            {/* <h1>Hi you will see tasks here</h1> */}
-            <AddTask />
+            
+            {newTasks.length !== 0
+                && <ul className="tasks__list">
+                    {newTasks.map((task) => (
+                    <li key={`${task.task_id}`}>
+                        {archivedTaskID.includes(task.task_id)
+                    ? <span><s>{task.task_desc}</s></span>
+                    : <>
+                        <Checkbox id={task.task_id} setArchivedTaskID = {setArchivedTaskID} taskDesc={task.task_desc} />
+                        <span>{task.task_desc}</span>
+                    </>
+                    }
+                    </li>
+                    ))}
+                </ul>
+            }
+            <AddTask setNewTasks = {setNewTasks}/>
     </div>
     )
 }

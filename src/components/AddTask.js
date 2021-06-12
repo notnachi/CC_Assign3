@@ -1,29 +1,72 @@
 import React, { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { FaRegListAlt, FaRegCalendarAlt } from 'react-icons/fa';
-import moment from 'moment';
+import moment from 'moment'
+import {addTask} from '../helpers/dynamoService'
 import { useSelectedSubjectValue } from '../context';
 import { SubjectOverlay } from './SubjectOverlay';
 import { TaskDate } from './TaskDate';
+import { getUser } from '../auth/authService';
 
 export const AddTask = ({
     showAddTaskMain = true,
     shouldShowMain = false,
     showQuickAddTask,
     setShowQuickAddTask,
+    setNewTasks
   }) =>{
+
 
     const [task, setTask] = useState('');
     const [taskDate, setTaskDate] = useState('');
     const [subject, setSubject] = useState('');
+    const [alternateSubject, setAlternateSubject] = useState('');
     const [showMain, setShowMain] = useState(shouldShowMain);
     const [showSubjectOverlay, setShowSubjectOverlay] = useState(false);
     const [showTaskDate, setShowTaskDate] = useState(false);
 
+    const user_name = getUser().username;
 
-    const { selectedSubject } = useSelectedSubjectValue();
+    const { selectedSubject, setSelectedSubject } = useSelectedSubjectValue();
 
-    const addTask = () => {
-        return true;
+    // console.log('Subject ',subject);
+    // console.log('Selected Subject ', selectedSubject);
+    // console.log(subject || selectedSubject);
+
+    const addTaskHandler = () => {
+
+      const subjectID = subject || alternateSubject || selectedSubject;
+      console.log('Subject ID ', subjectID)
+      let collatedDate = '';
+  
+      if (subjectID === 'TODAY') {
+        collatedDate = moment().format('DD/MM/YYYY');
+      } else if (subjectID === 'NEXT_7') {
+        collatedDate = moment().add(7, 'days').format('DD/MM/YYYY');
+      }
+
+      const newTask = {
+
+        task_id: uuidv4(),
+        archived: false,
+        date: taskDate,
+        subject_id: subjectID,
+        task_desc: task,
+        user_id: user_name
+
+      }
+
+      addTask(newTask).then(() => {
+
+      setTask('');
+      setSubject('');
+      setShowMain('');
+      setShowSubjectOverlay(false);
+      setSelectedSubject(subjectID);
+      setNewTasks(oldArray => [...oldArray, newTask]);
+
+    })
+      return task && subjectID;
     }
 
     return (
@@ -85,6 +128,7 @@ export const AddTask = ({
               />
               <TaskDate
                 setTaskDate={setTaskDate}
+                setAlternateSubject = {setAlternateSubject}
                 showTaskDate={showTaskDate}
                 setShowTaskDate={setShowTaskDate}
               />
@@ -102,8 +146,8 @@ export const AddTask = ({
                 data-testid="add-task"
                 onClick={() =>
                   showQuickAddTask
-                    ? addTask() && setShowQuickAddTask(false)
-                    : addTask()
+                    ? addTaskHandler() && setShowQuickAddTask(false)
+                    : addTaskHandler()
                 }
               >
                 Add Task

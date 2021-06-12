@@ -1,20 +1,32 @@
 import React, {useState} from 'react'
-import { FaPizzaSlice } from 'react-icons/fa';
+import { FaSignOutAlt } from 'react-icons/fa';
 import { AddTask } from '../AddTask';
+import { resetUserSession } from '../../auth/authService';
+import {Redirect} from 'react-router-dom'
 
-export const Header = () => {
+export const Header = (props) => {
     const [shouldShowMain, setShouldShowMain] = useState(false);
     const [showQuickAddTask, setShowQuickAddTask] = useState(false);
+
+
+    const logOutHandler = (e) => {
+
+        e.preventDefault();
+        resetUserSession();
+        window.location.reload(false);
+
+    }
 
     return (
         <header className="header" data-testid="header">
         <nav>
             <div className="logo">
-                Add logo here
+                <img src="/images/to-do.png" alt="Todoist" />
+                SimpliTask
             </div>
             <div className="settings">
             <ul>
-                <li className="settings__add">
+                {/* <li className="settings__add">
                 <button
                     data-testid="quick-add-task-action"
                     aria-label="Quick add task"
@@ -26,15 +38,15 @@ export const Header = () => {
                 >
                     +
                 </button>
-                </li>
+                </li> */}
                 <li className="settings__darkmode">
                 <button
                     data-testid="dark-mode-action"
                     aria-label="Darkmode on/off"
                     type="button"
-                    //onClick={() => setDarkMode(!darkMode)}
+                    onClick={logOutHandler}
                 >
-                    <FaPizzaSlice />
+                    <FaSignOutAlt />
                 </button>
                 </li>
             </ul>
