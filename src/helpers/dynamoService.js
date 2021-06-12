@@ -2,6 +2,8 @@ import AWS from 'aws-sdk';
 import { v4 as uuidv4 } from 'uuid';
 
 AWS.config.update({ 
+
+    
     
 })
 

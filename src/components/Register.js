@@ -71,7 +71,7 @@ export const Register = (props) => {
                 <input type="password" value = {password} onChange = {e => setPassword(e.target.value)} className="form-control" placeholder="Password" required="required" />
             </div>
             <div className="form-group">
-                <button type="submit" className="btn btn-primary btn-block">Log in</button>
+                <button type="submit" className="btn btn-primary btn-block">Register</button>
             </div>  
             <div className="clearfix">
                 {message && <p className = "text-center">{message}</p>}
