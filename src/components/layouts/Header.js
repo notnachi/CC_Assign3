@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import { FaSignOutAlt } from 'react-icons/fa';
 import { AddTask } from '../AddTask';
 import { resetUserSession } from '../../auth/authService';
-import {Redirect} from 'react-router-dom'
 
 export const Header = (props) => {
     const [shouldShowMain, setShouldShowMain] = useState(false);
@@ -27,17 +26,7 @@ export const Header = (props) => {
             <div className="settings">
             <ul>
                 {/* <li className="settings__add">
-                <button
-                    data-testid="quick-add-task-action"
-                    aria-label="Quick add task"
-                    type="button"
-                    onClick={() => {
-                    setShowQuickAddTask(true);
-                    setShouldShowMain(true);
-                    }}
-                >
-                    +
-                </button>
+                    <img src="/images/fish.jpg" className = "rounded" alt="" />
                 </li> */}
                 <li className="settings__darkmode">
                 <button

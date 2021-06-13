@@ -7,12 +7,13 @@ import axios from 'axios';
 import PrivateRoute from './routes/PrivateRoute'
 import PublicRoute from './routes/PublicRoute'
 import { Register } from './components/Register';
+import {APIURL, APIKey} from './constants'
 
 export const App = () => {
 
   
 
-  const verifyAPIURL = 'https://8rgaqja5p0.execute-api.us-east-2.amazonaws.com/prod/verify'
+  const verifyAPIURL = APIURL + 'verify'
 
   useEffect(() => {
 
@@ -31,7 +32,7 @@ export const App = () => {
 
         const requestConfig = {
           headers: {
-              'x-api-key': '3bMsvWAaCAoFCteTwI0D3ir0yUh5GVu81RpP9xQd'
+              'x-api-key': APIKey
           }
         }
 

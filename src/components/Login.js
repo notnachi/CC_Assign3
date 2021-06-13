@@ -3,10 +3,11 @@ import axios from 'axios';
 import {setUserSession} from '../auth/authService'
 import {NavLink} from 'react-router-dom'
 import '../Form.css'
+import {APIURL, APIKey} from '../constants'
 
 export const Login = (props) => {
 
-    const loginApiUrl = 'https://8rgaqja5p0.execute-api.us-east-2.amazonaws.com/prod/login'
+    const loginApiUrl = APIURL + 'login'
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [message, setMessage] = useState("")
@@ -25,7 +26,7 @@ export const Login = (props) => {
 
         const requestConfig = {
             headers: {
-                'x-api-key': '3bMsvWAaCAoFCteTwI0D3ir0yUh5GVu81RpP9xQd'
+                'x-api-key': APIKey
             }
         }
 

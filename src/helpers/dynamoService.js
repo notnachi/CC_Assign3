@@ -1,15 +1,12 @@
 import AWS from 'aws-sdk';
 import { v4 as uuidv4 } from 'uuid';
+import {subjects_table, tasks_table, AWSParams} from '../constants'
 
-AWS.config.update({ 
-
-    
-    
-})
+AWS.config.update(AWSParams)
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
-const subjects_table = 'subjects';
-const tasks_table = 'tasks';
+// const subjects_table = 'subjects';
+// const tasks_table = 'tasks';
 
 export const getTasks = async (user_id) => {
     const params = {

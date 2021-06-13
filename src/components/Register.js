@@ -2,9 +2,10 @@ import React, {useState} from 'react'
 import axios from 'axios';
 import {NavLink} from 'react-router-dom'
 import '../Form.css'
+import {APIURL, APIKey} from '../constants'
 
 export const Register = (props) => {
-    const registerAPIURL = 'https://8rgaqja5p0.execute-api.us-east-2.amazonaws.com/prod/register'
+    const registerAPIURL = APIURL + 'register'
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -16,7 +17,6 @@ export const Register = (props) => {
     const submitHandler = (e) => {
         e.preventDefault();
 
-
         if(name.trim() === '' || username.trim() === '' || email.trim() === '' || password.trim() === ''){
             setMessage("All fields are required")
             return;
@@ -26,7 +26,7 @@ export const Register = (props) => {
 
         const requestConfig = {
             headers: {
-                'x-api-key': '3bMsvWAaCAoFCteTwI0D3ir0yUh5GVu81RpP9xQd'
+                'x-api-key': APIKey
             }
         }
 
@@ -72,7 +72,7 @@ export const Register = (props) => {
             </div>
             <div className="form-group">
                 <button type="submit" className="btn btn-primary btn-block">Register</button>
-            </div>  
+            </div> 
             <div className="clearfix">
                 {message && <p className = "text-center">{message}</p>}
             </div> 

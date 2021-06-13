@@ -19,7 +19,7 @@ export const Sidebar = () => {
     return (
         <div className="sidebar" data-testid="sidebar">
             <ul className="sidebar__generic">
-                <li
+                {/* <li
                 data-testid="inbox"
                 className={active === 'inbox' ? 'active' : undefined}
                 >
@@ -39,7 +39,7 @@ export const Sidebar = () => {
                     </span>
                     <span>Inbox</span>
                 </div>
-                </li>
+                </li> */}
                 <li
                 data-testid="today"
                 className={active === 'today' ? 'active' : undefined}
